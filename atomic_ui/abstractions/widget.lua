@@ -1,5 +1,3 @@
-local _, geometry = ...
-
 ---@class AtomicUI.Widget
 ---@field enabled boolean
 ---@field internal table
@@ -31,7 +29,7 @@ local Widget = {}
 --- end,
 ---}
 ---```
-local function widget(config)
+function AtomicUI.widget(config)
   return setmetatable({
     config = config,
   }, {__index = Widget})
@@ -43,7 +41,7 @@ function Widget:create(...)
     internal = {},
     enabled = true,
     subwidget = {},
-    geometry = geometry {},
+    geometry = AtomicUI.geometry {x = 0, y = 0, width = 0, height = 0},
   }, {__index = self})
 
   if self.config.init then
@@ -91,5 +89,3 @@ end
 function Widget:Resize(newWidth, newHeight)
   self.geometry:resize(newWidth, newHeight)
 end
-
-return widget

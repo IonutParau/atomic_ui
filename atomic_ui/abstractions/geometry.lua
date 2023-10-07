@@ -6,7 +6,7 @@
 local Geometry = {}
 
 ---@param config AtomicUI.Geometry
-local function geometry(config)
+function AtomicUI.geometry(config)
   return setmetatable({x = config.x or 0, y = config.y or 0, width = config.width or 0, height = config.height or 0}, Geometry)
 end
 
@@ -37,5 +37,3 @@ function Geometry:scale(sx, sy)
   self.width = (self.width or 1) * sx
   self.height = (self.height or 1) * sy
 end
-
-return geometry

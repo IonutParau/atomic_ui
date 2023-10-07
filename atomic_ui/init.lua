@@ -1,10 +1,9 @@
 -- This is important for the other files
 local path = ...
 
-local geometry = require(path .. ".abstractions.geometry")
-local widget = require(path .. ".abstractions.widget", geometry)
+AtomicUI = {}
 
-return {
-  widget = widget,
-  geometry = geometry,
-}
+require(path .. ".abstractions.geometry")
+require(path .. ".abstractions.widget")
+
+return AtomicUI
