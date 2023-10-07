@@ -1,0 +1,3 @@
+-- This is just for an example
+-- If you want to run the example, clone the repo and run this with Love2D
+-- If you just want to use the library, just copy the atomic_ui folder.
