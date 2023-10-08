@@ -84,8 +84,18 @@ function Widget:Update(dt)
   self:InvokeConfigFunction("update", dt)
 end
 
+---@param subwidget AtomicUI.Widget
+function Widget:Add(subwidget)
+  table.insert(self.subwidget, subwidget)
+end
+
 ---@param newWidth number
 ---@param newHeight number
 function Widget:Resize(newWidth, newHeight)
   self.geometry:resize(newWidth, newHeight)
+  self.config.onResize(self)
+
+  for _, subwidget in ipairs(self.subwidget) do
+    subwidget.config.onParentResize(subwidget)
+  end
 end
