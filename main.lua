@@ -4,9 +4,7 @@
 
 local json = require("atomic_ui.abstractions.json")
 
-print(json.encodestr("test"))
-
-print(json.encode({
+local s = json.encode({
   test = "hello",
   test2 = 53.3,
   test3 = {
@@ -19,6 +17,10 @@ print(json.encode({
     shit = 50,
     omgnoway = "omg no way",
   },
-}, {
-  indentation = 2,
-}))
+})
+
+print(s)
+
+local d = json.decode(s)
+
+print(json.encode(d, {indentation = 2}))

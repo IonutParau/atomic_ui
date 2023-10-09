@@ -5,5 +5,7 @@ AtomicUI = {}
 
 require(path .. ".abstractions.geometry")
 require(path .. ".abstractions.widget")
+require(path .. ".abstractions.layout")
+require(path .. ".abstractions.theme")
 
 return AtomicUI

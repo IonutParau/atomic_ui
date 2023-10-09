@@ -12,8 +12,8 @@ local Widget = {}
 ---@field update? fun(self: AtomicUI.Widget, delta: number)
 ---@field keypress? fun(self: AtomicUI.Widget, keycode: love.KeyConstant, scancode: love.Scancode, continuous: boolean)
 ---@field keyrelease? fun(self: AtomicUI.Widget, keycode: love.KeyConstant, scancode: love.Scancode, continuous: boolean)
----@field onParentResize? fun(self: AtomicUI.Widget)
----@field onResize? fun(self: AtomicUI.Widget)
+---@field onParentResize? fun(self: AtomicUI.Widget, newWidth: number, newHeight: number)
+---@field onResize? fun(self: AtomicUI.Widget, newWidth: number, newHeight: number)
 ---@field updateGeometry? fun(self: AtomicUI.Widget)
 ---@field init? fun(self: AtomicUI.Widget, ...)
 
@@ -93,9 +93,9 @@ end
 ---@param newHeight number
 function Widget:Resize(newWidth, newHeight)
   self.geometry:resize(newWidth, newHeight)
-  self.config.onResize(self)
+  self.config.onResize(self, newWidth, newHeight)
 
   for _, subwidget in ipairs(self.subwidget) do
-    subwidget.config.onParentResize(subwidget)
+    subwidget.config.onParentResize(subwidget, newWidth, newHeight)
   end
 end
