@@ -8,4 +8,10 @@ require(path .. ".abstractions.widget")
 require(path .. ".abstractions.layout")
 require(path .. ".abstractions.theme")
 
+-- Layouts
+require(path .. ".layouts.linear_layout")
+
+-- Widgets
+require(path .. ".widgets.text")
+
 return AtomicUI

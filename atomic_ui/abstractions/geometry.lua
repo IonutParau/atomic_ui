@@ -4,8 +4,10 @@
 ---@field width number
 ---@field height number
 local Geometry = {}
+Geometry.__index = Geometry
 
 ---@param config AtomicUI.Geometry
+---@return AtomicUI.Geometry
 function AtomicUI.geometry(config)
   return setmetatable({x = config.x or 0, y = config.y or 0, width = config.width or 0, height = config.height or 0}, Geometry)
 end
@@ -36,4 +38,16 @@ end
 function Geometry:scale(sx, sy)
   self.width = (self.width or 1) * sx
   self.height = (self.height or 1) * sy
+end
+
+function Geometry:copy()
+  return AtomicUI.geometry(self)
+end
+
+---@param geo AtomicUI.Geometry
+function Geometry:copyInto(geo)
+  geo.x = self.x
+  geo.y = self.y
+  geo.width = self.width
+  geo.height = self.height
 end

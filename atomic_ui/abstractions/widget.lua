@@ -76,8 +76,8 @@ function Widget:InvokeConfigFunctionInverse(name, ...)
     return
   end
 
-  for _, subwidget in ipairs(self.subwidget) do
-    subwidget:InvokeConfigFunctionInverse(name, ...)
+  for i=#self.subwidget, 1, -1 do
+    self.subwidget[i]:InvokeConfigFunctionInverse(name, ...)
   end
 
   if self.config[name] then self.config[name](self, ...) end

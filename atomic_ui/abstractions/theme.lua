@@ -12,7 +12,7 @@ local function color(r, g, b, a)
   if r == nil then
     ---@diagnostic disable-next-line: redefined-local
     local r, g, b, a = love.graphics.getColor()
-    return setmetatable({r = r, g = g, b = b, a = a}, {__index = Color})
+    return setmetatable({r = r * 255, g = g * 255, b = b * 255, a = a * 255}, {__index = Color})
   end
 
   if type(r) == "number" then
@@ -58,7 +58,7 @@ AtomicUI.DefaultTheme = theme {
   primaryColor = color(54, 76, 97),
   secondaryColor = color(47, 62, 77),
   ternaryColor = color(34, 44, 54),
-  textSize = 20,
+  textSize = 64,
   textColor = color(255, 255, 255),
   buttonPadding = 8,
   listSpacing = 5,

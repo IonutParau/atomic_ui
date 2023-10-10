@@ -3,14 +3,16 @@ AtomicUI.Text = AtomicUI.widget {
   init = function(self, config)
     self.text = config[1] or config.text or "No text"
     self.fontSize = config.fontSize or AtomicUI.CurrentTheme.textSize
-    self.textAlign = "left"
     if config.font then
       self.font = config.font and love.graphics.newFont(config.font, self.fontSize) or love.graphics.newFont(self.fontSize)
+    else
+      self.font = love.graphics.newFont(self.fontSize)
     end
     self.stretch = config.stretch
     self.padding = config.padding or AtomicUI.CurrentTheme.textPadding
     self.geometry:reposition(config.x or 0, config.y or 0)
     self.geometry:resize(self.width or self.font:getWidth(self.text), self.height or self.font:getHeight())
+    self.color = config.color or AtomicUI.color()
   end,
   beginDraw = function(self)
     local sx, sy = 1, 1
@@ -19,9 +21,18 @@ AtomicUI.Text = AtomicUI.widget {
       sy = self.geometry.height / self.font:getHeight()
     end
     local padding = self.padding
+
+    local oldColor = AtomicUI.color()
+    self.color:apply()
+    local oldfont = love.graphics.getFont()
+    love.graphics.setFont(self.font)
+    
     love.graphics.print(self.text, self.geometry.x + padding, self.geometry.y + padding, 0, sx, sy)
+
+    love.graphics.setFont(oldfont)
+    oldColor:apply()
   end,
   updateGeometry = function (self)
-    self.geometry:resize(self.width or self.font:getWidth(self.text), self.height or self.font:getHeight())
+    self.geometry:resize((self.width or self.font:getWidth(self.text)) + self.padding * 2, (self.height or self.font:getHeight()) + self.padding * 2)
   end
 }

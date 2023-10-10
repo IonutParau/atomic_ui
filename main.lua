@@ -2,25 +2,20 @@
 -- If you want to run the example, clone the repo and run this with Love2D
 -- If you just want to use the library, just copy the atomic_ui folder.
 
-local json = require("atomic_ui.abstractions.json")
+require("atomic_ui")
 
-local s = json.encode({
-  test = "hello",
-  test2 = 53.3,
-  test3 = {
-    "this",
-    "is",
-    "a",
-    "list"
-  },
-  recursive = {
-    shit = 50,
-    omgnoway = "omg no way",
-  },
-})
+love.graphics.setColor(1, 1, 1)
 
-print(s)
+local t = AtomicUI.Text:create {
+  "Simple text",
+  padding = 10,
+  fontSize = 32,
+}
 
-local d = json.decode(s)
+function love.draw()
+  t:Draw()
+end
 
-print(json.encode(d, {indentation = 2}))
+function love.update(dt)
+  --t:Update(dt)
+end
