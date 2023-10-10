@@ -3,7 +3,7 @@
 ---@field addWidget fun(self: AtomicUI.Layout, ...)
 ---@field updateGeometry fun(self: AtomicUI.Layout)
 ---@field init fun(self: AtomicUI.Layout, ...)
----@field update fun(self: AtomicUI.Layout, dt: number)
+---@field update? fun(self: AtomicUI.Layout, dt: number)
 
 ---@class AtomicUI.Layout: AtomicUI.Widget
 ---@field Add fun(self: AtomicUI.Layout, ...)
@@ -22,7 +22,9 @@ local function layout(config)
     update = config.update,
   }
 
-  w.Add = config.addWidget -- Intercept Add
+  if config.addWidget then
+    w.Add = config.addWidget -- Intercept Add
+  end
   ---@cast w AtomicUI.Layout
 
   return w

@@ -1,9 +1,9 @@
 ---@class AtomicUI.Widget
----@field enabled boolean
+---@field enabled boolean | (fun(self: AtomicUI.Widget): boolean)
 ---@field internal table
 ---@field config AtomicUI.WidgetConfig
 ---@field subwidget AtomicUI.Widget[]
----@field geometry? AtomicUI.Geometry
+---@field geometry AtomicUI.Geometry
 local Widget = {}
 
 ---@class AtomicUI.WidgetConfig
@@ -16,6 +16,7 @@ local Widget = {}
 ---@field onResize? fun(self: AtomicUI.Widget, newWidth: number, newHeight: number)
 ---@field updateGeometry? fun(self: AtomicUI.Widget)
 ---@field init? fun(self: AtomicUI.Widget, ...)
+---@field enabled? fun(self:AtomicUI.Widget): boolean
 
 ---@param config AtomicUI.WidgetConfig
 ---@return AtomicUI.Widget
@@ -32,14 +33,14 @@ local Widget = {}
 function AtomicUI.widget(config)
   return setmetatable({
     config = config,
-  }, {__index = Widget})
+  }, {__index = Widget, __call = Widget.create})
 end
 
 ---@return AtomicUI.Widget
 function Widget:create(...)
   local w = setmetatable({
     internal = {},
-    enabled = true,
+    enabled = type(self.config.enabled) == "function" and self.config.enabled or true,
     subwidget = {},
     geometry = AtomicUI.geometry {x = 0, y = 0, width = 0, height = 0},
   }, {__index = self})
@@ -53,6 +54,12 @@ end
 
 ---@param name string
 function Widget:InvokeConfigFunction(name, ...)
+  if type(self.enabled) == "function" then
+    if not self:enabled() then return end
+  elseif not self.enabled then
+    return
+  end
+
   -- Because all configs are optinal, we need to check if it exists
   if self.config[name] then self.config[name](self, ...) end
 
@@ -63,6 +70,12 @@ end
 
 ---@param name string
 function Widget:InvokeConfigFunctionInverse(name, ...)
+  if type(self.enabled) == "function" then
+    if not self:enabled() then return end
+  elseif not self.enabled then
+    return
+  end
+
   for _, subwidget in ipairs(self.subwidget) do
     subwidget:InvokeConfigFunctionInverse(name, ...)
   end
