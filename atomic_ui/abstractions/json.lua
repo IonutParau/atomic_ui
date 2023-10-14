@@ -84,10 +84,6 @@ function json.encodestr(str)
       c = "\\\""
     elseif c == "\r" then
       c = "\\r"
-    elseif not isAscii(c) then
-      local h = tohex(string.byte(c))
-      if #h == 1 then h = "0" .. h end
-      c = "\\x" .. h
     end
 
     s = s .. c
@@ -213,6 +209,22 @@ function json.encode(data, options, indent, indentInitially)
 end
 
 ---@param str string
+function json.decodestr(str)
+  local i = 2
+  local s = ""
+  while i < #str do
+    local c = str:sub(i, i)
+    i = i + 1
+  end
+  return s
+end
+
+---@param c string
+local function isNum(c)
+  return c:byte(1, 1) >= string.byte('0', 1, 1) and c:byte(1, 1) <= string.byte('9', 1, 1)
+end
+
+---@param str string
 ---@param transformers? (fun(val: JSONSerializable): JSONSerializable?)[]
 ---@return JSONSerializable
 --- NOTE: This function expects valid JSON.
@@ -221,50 +233,42 @@ end
 function json.decode(str, transformers)
   local i = 1
 
-  ---@type (number | string)?
-  local field
-
-  ---@type JSONSerializable[]
-  local vals = {}
-  local function decodestr()
-    local s = ''
-    while true do
-      i = i + 1
-      local c = str:sub(i, i)
-      if c == '"' then break end
-      if c == '\\' then
-        -- Handle escape sequences
-        i = i + 1
-        local escape = str:sub(i, i)
-        if escape == "n" then
-          s = s .. '\n'
-        elseif escape == "t" then
-          s = s .. '\t'
-        elseif escape == "r" then
-          s = s .. '\r'
-        elseif escape == "b" then
-          s = s .. '\b'
-        elseif escape == "f" then
-          s = s .. '\f'
-        else
-          s = s .. escape
-        end
-      else
-        s = s .. c
-      end
-    end
-    i = i + 1
-
-    return s
-  end
-
-  local function skipWhitespace()
+  local function nextToken()
     local c = str:sub(i, i)
-    while c == ' ' or c == '\t' or c == '\n' do
+    while c == " " or c == "\t" or c == "\n" do
       i = i + 1
       c = str:sub(i, i)
+      if c == nil then return end
+    end
+    if c == "{" then
+      i = i + 1
+      return c
+    elseif c == "}" then
+      i = i + 1
+      return c
+    elseif c == "[" then
+      i = i + 1
+      return c
+    elseif c == "]" then
+      i = i + 1
+      return c
+    elseif c == ":" then
+      i = i + 1
+      return c
+    elseif c == "," then
+      i = i + 1
+      return c
+    elseif c:byte(1,1) >= string.byte('0', 1, 1) and c:byte(1, 1) <= string.byte('9', 1, 1) then
+      local n = 0
+      while isNum(c) do
+        n = n * 10
+        n = n + c:byte(1, 1) - string.byte('0', 1, 1)
+        i = i + 1
+        c = str:sub(i, i)
+      end
     end
   end
+end
 
   ---@param c string
   local function isNum(c)
