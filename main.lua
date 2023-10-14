@@ -24,6 +24,9 @@ local btn = AtomicUI.SquareButton:create {
     n = n * 2
     t.text = "Clicks " .. n
   end,
+  whileClicked = function()
+    t.text = "Clicks " .. n .. " (current clicked)"
+  end,
 }
 
 function love.load()

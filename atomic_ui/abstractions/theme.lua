@@ -18,7 +18,11 @@ local function color(r, g, b, a)
   if type(r) == "number" then
     return setmetatable({r = r, g = g, b = b, a = a or 255}, {__index = Color})
   end
-  -- TODO: handle hex
+  
+  if type(r) == "string" then
+    local r, g, b, a = tonumber(r:sub(1, 2), 16), tonumber(r:sub(3, 4), 16), tonumber(r:sub(5, 6), 16), tonumber(r:sub(7, 8)) or 255
+    return setmetatable({r = r, g = g, b = b, a = a}, {__index = Color})
+  end
 end
 
 function Color:apply()
