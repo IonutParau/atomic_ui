@@ -17,6 +17,7 @@ local Widget = {}
 ---@field updateGeometry? fun(self: AtomicUI.Widget)
 ---@field init? fun(self: AtomicUI.Widget, ...)
 ---@field enabled? fun(self:AtomicUI.Widget): boolean
+---@field onInsert? fun(self:AtomicUI.Widget, parent: AtomicUI.Widget)
 
 ---@param config AtomicUI.WidgetConfig
 ---@return AtomicUI.Widget
@@ -124,6 +125,7 @@ end
 ---@param subwidget AtomicUI.Widget
 function Widget:Add(subwidget)
   table.insert(self.subwidget, subwidget)
+  if subwidget.config.onInsert then subwidget.config.onInsert(subwidget, self) end
 end
 
 ---@param newWidth number

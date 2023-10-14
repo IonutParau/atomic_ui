@@ -20,12 +20,23 @@ local function layout(config)
     updateGeometry = config.updateGeometry,
     init = config.init,
     update = config.update,
+    onInsert = function (self, parent)
+      self:UpdateGeometry()
+      ---@cast self AtomicUI.Layout
+      config.processWidgets(self, parent.geometry.width, parent.geometry.height)
+    end
   }
 
-  if config.addWidget then
-    w.Add = config.addWidget -- Intercept Add
-  end
   ---@cast w AtomicUI.Layout
+
+  if config.addWidget then
+    local oldAdd = w.Add
+    w.Add = function(self, subwidget)
+      oldAdd(self, subwidget)
+      ---@cast self AtomicUI.Layout
+      config.addWidget(self, subwidget)
+    end
+  end
 
   return w
 end
