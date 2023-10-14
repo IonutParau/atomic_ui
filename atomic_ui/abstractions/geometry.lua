@@ -51,3 +51,8 @@ function Geometry:copyInto(geo)
   geo.width = self.width
   geo.height = self.height
 end
+
+---@param geo AtomicUI.Geometry
+function Geometry:sameAs(geo)
+  return self.x == geo.x and self.y == geo.y and self.width == geo.width and self.height == geo.height
+end

@@ -1,4 +1,4 @@
----@class AtomicUI.Widget
+---@class AtomicUI.Widget<T>
 ---@field enabled boolean | (fun(self: AtomicUI.Widget): boolean)
 ---@field internal table
 ---@field config AtomicUI.WidgetConfig
@@ -50,6 +50,30 @@ function Widget:create(...)
   end
 
   return w
+end
+
+--- Defines a new Widget class based on an old one
+---@param config AtomicUI.WidgetConfig
+---@return AtomicUI.Widget
+function Widget:inherit(config)
+  return setmetatable({
+    config = setmetatable({}, {__index = function(_, field)
+      if config[field] and not self.config[field] then
+        return config[field]
+      end
+      if not config[field] and self.config[field] then
+        return self.config[field]
+      end
+      if type(config[field]) == "function" and type(self.config[field]) == "function" then
+        return function(...)
+          self.config[field](...)
+          return config[field](...)
+        end
+      end
+
+      return config[field]
+    end}),
+  }, {__index = self, __call = Widget.create})
 end
 
 ---@param name string
