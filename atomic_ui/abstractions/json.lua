@@ -199,7 +199,7 @@ function json.encode(data, options, indent, indentInitially)
             end
           end
         end
-        str = (str == "{") and "{}" or (str:sub(0, -3) .. "}") -- Remove trailing , and replace it with }
+        str = (str == "{") and "{}" or (str:sub(0, -2) .. "}") -- Remove trailing , and replace it with }
       end
       return indentinit .. str
     end

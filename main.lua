@@ -6,16 +6,34 @@ require("atomic_ui")
 
 love.graphics.setColor(1, 1, 1)
 
+local n = 0
+
 local t = AtomicUI.Text:create {
-  "Simple text",
+  "Clicks 0",
   padding = 10,
   fontSize = 32,
 }
 
+local btn = AtomicUI.SquareButton:create {
+  t,
+  onClick = function()
+    n = n + 1
+    t.text = "Clicks " .. n
+  end,
+  onLongClick = function()
+    n = n * 2
+    t.text = "Clicks " .. n
+  end,
+}
+
+function love.load()
+  btn.geometry:resize(100, 100)
+end
+
 function love.draw()
-  t:Draw()
+  btn:Draw()
 end
 
 function love.update(dt)
-  --t:Update(dt)
+  btn:Update(dt)
 end

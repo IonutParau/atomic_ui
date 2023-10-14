@@ -1,9 +1,12 @@
 AtomicUI.RawButton = AtomicUI.widget {
   init = function(self, config)
     self:Add(config[1])
+    config[1]:UpdateGeometry()
+    self.geometry = self.subwidget[1].geometry:copy()
 
     self.onClick = config.onClick
     self.onLongClick = config.onLongClick
+    self.whileClicked = config.whileClicked
     self.longPress = config.longPressTime or 0.2
     self.oldGeometry = self.geometry:copy()
     self.timedPress = 0
@@ -19,16 +22,20 @@ AtomicUI.RawButton = AtomicUI.widget {
       self.subwidget[1].geometry:copyInto(self.geometry)
     end
 
-    local mx, my = love.mouse.getX()
+    local mx, my = love.mouse.getPosition()
     if love.mouse.isDown(1) and self.shape(self.geometry, mx, my) then
       -- Is pressed
       self.timedPress = self.timedPress + dt
-    elseif self.timedPress > 0 then -- No longer pressed but was pressed
-      if self.timedPress >= self.longPress then
-        self.onLongClick()
-      else
-        self.onClick()
+      if self.whileClicked then self.whileClicked() end
+    else
+      if self.timedPress > 0 then -- No longer pressed but was pressed
+        if self.timedPress >= self.longPress then
+          if self.onLongClick then self.onLongClick() end
+        else
+          if self.onClick then self.onClick() end
+        end
       end
+      self.timedPress = 0
     end
   end,
   updateGeometry = function (self)
@@ -38,7 +45,7 @@ AtomicUI.RawButton = AtomicUI.widget {
 }
 
 AtomicUI.SquareButton = AtomicUI.RawButton:inherit {
-  init = function(config)
+  init = function(self, config)
     ---@param geometry AtomicUI.Geometry
     ---@param mx number
     ---@param my number
