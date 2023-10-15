@@ -11,6 +11,15 @@ AtomicUI.RawButton = AtomicUI.widget {
     self.oldGeometry = self.geometry:copy()
     self.timedPress = 0
     self.shape = config.shape
+
+    local padding = config.padding or AtomicUI.CurrentTheme.buttonPadding or 0
+    if padding > 0 then
+      local padding = AtomicUI.Padding {
+        padding = padding,
+        config[1],
+      }
+      self.subwidget[1] = padding
+    end
   end,
   update = function(self, dt)
     if not self.geometry:sameAs(self.oldGeometry) then
@@ -52,5 +61,22 @@ AtomicUI.SquareButton = AtomicUI.RawButton:inherit {
     self.shape = function(geometry, mx, my)
       return mx >= geometry.x and my >= geometry.y and mx <= geometry.x + geometry.width and my <= geometry.y + geometry.height
     end
+  end,
+}
+
+AtomicUI.FilledButton = AtomicUI.SquareButton:inherit {
+  init = function(self, config)
+    self.color = config.color or AtomicUI.CurrentTheme.buttonColor or AtomicUI.CurrentTheme.primaryColor or AtomicUI.color()
+    self.rx = config.rx or AtomicUI.CurrentTheme.filledButtonRoundedCorners
+    self.ry = config.ry or AtomicUI.CurrentTheme.filledButtonRoundedCorners
+    self.segments = config.segments or AtomicUI.CurrentTheme.filledButtonRoundedSegments
+  end,
+  beginDraw = function(self)
+    local oldColor = AtomicUI.color()
+    self.color:apply()
+
+    love.graphics.rectangle("fill", self.geometry.x, self.geometry.y, self.geometry.width, self.geometry.height, self.rx, self.ry, self.segments)
+    
+    oldColor:apply()
   end,
 }

@@ -12,9 +12,11 @@ local t = AtomicUI.Text:create {
   "Clicks 0",
   padding = 10,
   fontSize = 32,
+  x = 20,
+  y = 20,
 }
 
-local btn = AtomicUI.SquareButton:create {
+local btn = AtomicUI.FilledButton:create {
   t,
   onClick = function()
     n = n + 1
@@ -29,14 +31,15 @@ local btn = AtomicUI.SquareButton:create {
   end,
 }
 
+local root = btn
+
 function love.load()
-  btn.geometry:resize(100, 100)
 end
 
 function love.draw()
-  btn:Draw()
+  root:Draw()
 end
 
 function love.update(dt)
-  btn:Update(dt)
+  root:Update(dt)
 end

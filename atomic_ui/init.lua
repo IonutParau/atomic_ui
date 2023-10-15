@@ -17,5 +17,6 @@ require(path .. ".widgets.text")
 require(path .. ".widgets.image")
 require(path .. ".widgets.node")
 require(path .. ".widgets.button")
+require(path .. ".widgets.containers")
 
 return AtomicUI

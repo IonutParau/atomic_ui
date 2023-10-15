@@ -38,6 +38,8 @@ end
 ---@field textSize? number
 ---@field buttonPadding? number
 ---@field listSpacing? number
+---@field filledButtonRoundedCorners? number
+---@field filledButtonRoundedSegments? number
 ---@field inheritsFrom? AtomicUI.Theme
 
 ---@param config AtomicUI.Theme
@@ -66,6 +68,7 @@ AtomicUI.DefaultTheme = theme {
   textColor = color(255, 255, 255),
   buttonPadding = 8,
   listSpacing = 5,
+  filledButtonRoundedCorners = 15,
 }
 
 AtomicUI.CurrentTheme = AtomicUI.DefaultTheme

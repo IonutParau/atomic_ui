@@ -221,7 +221,16 @@ end
 
 ---@param c string
 local function isNum(c)
-  return c:byte(1, 1) >= string.byte('0', 1, 1) and c:byte(1, 1) <= string.byte('9', 1, 1)
+  local n = c:byte(1, 1)
+
+  local a, b = string.byte("09", 1, 2)
+
+  return n >= a and n <= b
+end
+
+---@param c string
+local function toNum(c)
+  return c:byte(1, 1) - string.byte("0", 1)
 end
 
 ---@param str string
@@ -268,112 +277,6 @@ function json.decode(str, transformers)
       end
     end
   end
-end
-
-  ---@param c string
-  local function isNum(c)
-    local n = c:byte(1, 1)
-
-    local a, b = string.byte("09", 1, 2)
-
-    return n >= a and n <= b
-  end
-
-  ---@param c string
-  local function toNum(c)
-    return c:byte(1, 1) - string.byte("0", 1)
-  end
-  
-  local decodeExpr
-
-  ---@return JSONSerializable
-  decodeExpr = function()
-    skipWhitespace()
-    if str:sub(i, i) == '"' then
-      return decodestr()
-    elseif str:sub(i, i) == "{" then
-      i = i + 1
-      local t = {}
-
-      while str:sub(i, i) ~= "}" do
-        skipWhitespace()
-        local key = decodestr()
-        print(key)
-        skipWhitespace()
-        local val = decodeExpr()
-        skipWhitespace()
-        if str:sub(i, i) == "," then
-          i = i + 1
-        end
-        skipWhitespace()
-
-        t[key] = val
-      end
-      i = i + 1
-
-      return t
-    elseif str:sub(i, i) == "[" then
-      i = i + 1
-      local l = {}
-
-      while str:sub(i, i) ~= "]" do
-        skipWhitespace()
-        local val = decodeExpr()
-        skipWhitespace()
-        if str:sub(i, i) == "," then
-          i = i + 1
-        end
-        skipWhitespace()
-
-        table.insert(l, val)
-      end
-      i = i + 1
-
-      return l
-    elseif str:sub(i, i) == "t" then
-      -- true
-      i = i + 4
-      return true
-    elseif str:sub(i, i) == "f" then
-      -- false
-      i = i + 5
-      return false
-    elseif str:sub(i, i) == "n" then
-      -- null
-      i = i + 4
-      ---@diagnostic disable-next-line: return-type-mismatch
-      return nil
-    elseif isNum(str:sub(i, i)) then
-      local n = 0
-      local frac = false
-      local fracMult = 1
-      while isNum(str:sub(i, i)) do
-        if not frac then n = n * 10 end
-        n = n + toNum(str:sub(i, i)) * fracMult
-        if frac then fracMult = fracMult / 10 end
-        i = i + 1
-        if str:sub(i, i) == "." then
-          frac = true
-          fracMult = 0.1
-          i = i + 1
-        elseif str:sub(i, i) == "e" then
-          local power = 0
-          i = i + 1
-          
-          while isNum(str:sub(i, i)) do
-            power = power * 10
-            power = power + toNum(str:sub(i, i))
-            i = i + 1
-          end
-
-          return n * 10 ^ power
-        end
-      end
-      return n
-    end
-  end
-
-  return decodeExpr()
 end
 
 ---@alias JSONError {column: number, line: number, charIndex: number, error: string}
