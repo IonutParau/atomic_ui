@@ -1,6 +1,9 @@
 ---@diagnostic disable: undefined-field, inject-field
 AtomicUI.Text = AtomicUI.widget {
   init = function(self, config)
+    if type(config) == "string" then
+      config = {config}
+    end
     self.text = config[1] or config.text or "No text"
     self.fontSize = config.fontSize or AtomicUI.CurrentTheme.textSize
     if config.font then
@@ -11,7 +14,7 @@ AtomicUI.Text = AtomicUI.widget {
     self.stretch = config.stretch
     self.padding = config.padding or AtomicUI.CurrentTheme.textPadding
     self.geometry:reposition(config.x or 0, config.y or 0)
-    self.geometry:resize(self.width or self.font:getWidth(self.text), self.height or self.font:getHeight())
+    self.geometry:resize(self.font:getWidth(self.text), self.font:getHeight())
     self.color = config.color or AtomicUI.color()
   end,
   beginDraw = function(self)
@@ -33,6 +36,6 @@ AtomicUI.Text = AtomicUI.widget {
     oldColor:apply()
   end,
   updateGeometry = function (self)
-    self.geometry:resize((self.width or self.font:getWidth(self.text)) + self.padding * 2, (self.height or self.font:getHeight()) + self.padding * 2)
+    self.geometry:resize((self.font:getWidth(self.text)) + self.padding * 2, (self.font:getHeight()) + self.padding * 2)
   end
 }

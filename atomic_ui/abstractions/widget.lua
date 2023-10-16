@@ -12,12 +12,12 @@ local Widget = {}
 ---@field update? fun(self: AtomicUI.Widget, delta: number)
 ---@field keypress? fun(self: AtomicUI.Widget, keycode: love.KeyConstant, scancode: love.Scancode, continuous: boolean)
 ---@field keyrelease? fun(self: AtomicUI.Widget, keycode: love.KeyConstant, scancode: love.Scancode, continuous: boolean)
----@field onParentResize? fun(self: AtomicUI.Widget, newWidth: number, newHeight: number)
 ---@field onResize? fun(self: AtomicUI.Widget, newWidth: number, newHeight: number)
 ---@field updateGeometry? fun(self: AtomicUI.Widget)
 ---@field init? fun(self: AtomicUI.Widget, ...)
 ---@field enabled? fun(self:AtomicUI.Widget): boolean
 ---@field onInsert? fun(self:AtomicUI.Widget, parent: AtomicUI.Widget)
+---@field onScroll? fun(self: AtomicUI.Widget, x: number, y: number, scrollX: number, scrollY: number)
 
 ---@param config AtomicUI.WidgetConfig
 ---@return AtomicUI.Widget
@@ -133,8 +133,8 @@ end
 function Widget:Resize(newWidth, newHeight)
   self.geometry:resize(newWidth, newHeight)
   self.config.onResize(self, newWidth, newHeight)
+end
 
-  for _, subwidget in ipairs(self.subwidget) do
-    subwidget.config.onParentResize(subwidget, newWidth, newHeight)
-  end
+function Widget:Scroll(x, y, sx, sy)
+  self:InvokeConfigFunction("onScroll", x, y, sx, sy)
 end

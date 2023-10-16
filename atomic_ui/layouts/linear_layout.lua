@@ -1,11 +1,16 @@
 ---@diagnostic disable: undefined-field, inject-field
-AtomicUI.linear_layout = AtomicUI.layout {
+AtomicUI.LineLayout = AtomicUI.layout {
   init = function(self, config)
     local spacing = config.spacing or AtomicUI.CurrentTheme.listSpacing
 
     self.spacing = spacing
     self.sizes = {}
     self.vertical = config.vertical
+
+    for _, child in ipairs(config) do
+      self:Add(child)
+      table.insert(self.sizes, 1)
+    end
   end,
   addWidget = function(self, widget, size)
     table.insert(self.subwidget, widget)
@@ -13,6 +18,7 @@ AtomicUI.linear_layout = AtomicUI.layout {
   end,
   processWidgets = function (self, parentWidth, parentHeight)
     self.geometry:resize(parentWidth, parentHeight)
+    self.geometry:reposition(self.parent.geometry.x, self.parent.geometry.y)
     local maxOrthogonal = 0
 
     -- Use up-to-date geometry
@@ -30,7 +36,7 @@ AtomicUI.linear_layout = AtomicUI.layout {
     local maxParallel = self.vertical and parentHeight or parentWidth
     local sizePerUnit = (maxParallel - totalSpacing * self.spacing) / total
 
-    local i = self.spacing
+    local i = 0
     for j, widget in ipairs(self.subwidget) do
       local geometry = widget.geometry
       geometry:reposition(self.geometry.x, self.geometry.y)
@@ -38,10 +44,10 @@ AtomicUI.linear_layout = AtomicUI.layout {
       local size = self.sizes[j]
 
       if self.vertical then
-        geometry:move(self.geometry.x + self.spacing, self.geometry.y + i)
+        geometry:move(self.spacing, i)
         geometry:resize(maxOrthogonal, size * sizePerUnit)
       else
-        geometry:move(self.geometry.x + i, self.geometry.y + self.spacing)
+        geometry:move(i, self.spacing)
         geometry:resize(size * sizePerUnit, maxOrthogonal)
       end
       i = i + size * sizePerUnit + self.spacing

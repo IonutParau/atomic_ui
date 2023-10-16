@@ -31,7 +31,21 @@ local btn = AtomicUI.FilledButton:create {
   end,
 }
 
-local root = btn
+local list = AtomicUI.ListView {
+  x = 60,
+  y = 0,
+  height = 100,
+  AtomicUI.Text "Hello",
+  AtomicUI.Text "There",
+  AtomicUI.Text "This",
+  AtomicUI.Text "Is",
+  AtomicUI.Text "A",
+  AtomicUI.Text "Test",
+  filled = true,
+}
+
+---@type AtomicUI.Widget
+local root = list
 
 function love.load()
 end
@@ -42,4 +56,8 @@ end
 
 function love.update(dt)
   root:Update(dt)
+end
+
+function love.wheelmoved(x, y)
+  root:Scroll(love.mouse.getX(), love.mouse.getY(), x, y)
 end

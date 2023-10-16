@@ -31,7 +31,7 @@ AtomicUI.Padding = AtomicUI.widget {
 AtomicUI.Box = AtomicUI.widget {
   init = function(self, config)
     self.padding = config.padding
-    self.color = config.color or AtomicUI.CurrentTheme.secondaryColor or AtomicUI.color()
+    self.color = config.color or AtomicUI.CurrentTheme.secondaryColor
     self.rx = config.rx
     self.ry = config.ry
     self.segments = config.segments
@@ -44,14 +44,19 @@ AtomicUI.Box = AtomicUI.widget {
 
     local child = config[1]
 
-    self:Add(AtomicUI.Padding {
-      child,
-      padding = self.padding,
-      geometry = self.geometry,
-    })
+    if self.padding then
+      self:Add(AtomicUI.Padding {
+        child,
+        padding = self.padding,
+        geometry = self.geometry,
+      })
+    else
+      self:Add(child)
+    end
   end,
   beginDraw = function(self)
     local oldcolor = AtomicUI.color()
+    self.color:apply()
 
     love.graphics.rectangle("fill", self.geometry.x, self.geometry.y, self.geometry.width, self.geometry.height, self.rx, self.ry, self.segments)
 

@@ -7,20 +7,32 @@
 
 ---@class AtomicUI.Layout: AtomicUI.Widget
 ---@field Add fun(self: AtomicUI.Layout, ...)
+---@field parent AtomicUI.Widget
+---@field oldParentGeometry AtomicUI.Geometry
 
 ---@param config AtomicUI.LayoutConfig
 ---@return AtomicUI.Layout
 local function layout(config)
   local w = AtomicUI.widget {
-    onParentResize = function(self, w, h)
-      ---@cast self AtomicUI.Layout
-      self:UpdateGeometry()
-      config.processWidgets(self, w, h)
-    end,
     updateGeometry = config.updateGeometry,
     init = config.init,
-    update = config.update,
+    update = function(self, dt)
+      ---@cast self AtomicUI.Layout
+
+      if not self.oldParentGeometry:sameAs(self.parent.geometry) then
+        self:UpdateGeometry()
+        config.processWidgets(self, self.parent.geometry.width, self.parent.geometry.height)
+        self.oldParentGeometry:copyInto(self.parent.geometry)
+      end
+      if config.update then
+        config.update(self, dt)
+      end
+    end,
     onInsert = function (self, parent)
+      ---@cast self AtomicUI.Layout
+      
+      self.parent = parent
+      self.oldParentGeometry = parent.geometry:copy()
       self:UpdateGeometry()
       ---@cast self AtomicUI.Layout
       config.processWidgets(self, parent.geometry.width, parent.geometry.height)

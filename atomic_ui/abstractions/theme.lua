@@ -37,6 +37,7 @@ end
 ---@field textColor? AtomicUI.Color
 ---@field textSize? number
 ---@field buttonPadding? number
+---@field textPadding? number
 ---@field listSpacing? number
 ---@field filledButtonRoundedCorners? number
 ---@field filledButtonRoundedSegments? number
@@ -64,11 +65,12 @@ AtomicUI.DefaultTheme = theme {
   primaryColor = color(54, 76, 97),
   secondaryColor = color(47, 62, 77),
   ternaryColor = color(34, 44, 54),
-  textSize = 64,
+  textSize = 16,
   textColor = color(255, 255, 255),
   buttonPadding = 8,
-  listSpacing = 5,
+  listSpacing = 10,
   filledButtonRoundedCorners = 15,
+  textPadding = 3,
 }
 
 AtomicUI.CurrentTheme = AtomicUI.DefaultTheme
