@@ -51,10 +51,14 @@ AtomicUI.ListView = AtomicUI.widget {
     else
       love.graphics.clear(0, 0, 0, 0)
     end
+    AtomicUI.offX = AtomicUI.offX + self.geometry.x
+    AtomicUI.offY = AtomicUI.offY + self.geometry.y
   end,
   endDraw = function (self)
     love.graphics.setCanvas(self.oldcanvas)
     love.graphics.draw(self.tmpcanvas, self.geometry.x, self.geometry.y)
+    AtomicUI.offX = AtomicUI.offX - self.geometry.x
+    AtomicUI.offY = AtomicUI.offY - self.geometry.y
   end,
   onScroll = function(self, x, y, sx, sy)
     if x >= self.geometry.x and y >= self.geometry.y and x <= self.geometry.x + self.geometry.width and y <= self.geometry.y + self.geometry.height then

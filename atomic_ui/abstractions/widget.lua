@@ -18,6 +18,8 @@ local Widget = {}
 ---@field enabled? fun(self:AtomicUI.Widget): boolean
 ---@field onInsert? fun(self:AtomicUI.Widget, parent: AtomicUI.Widget)
 ---@field onScroll? fun(self: AtomicUI.Widget, x: number, y: number, scrollX: number, scrollY: number)
+---@field onTextInput? fun(self: AtomicUI.Widget, text: string)
+---@field onKeyPress? fun(self: AtomicUI.Widget, key: love.KeyConstant, scancode: love.Scancode, isrepeat: boolean)
 
 ---@param config AtomicUI.WidgetConfig
 ---@return AtomicUI.Widget
@@ -120,6 +122,17 @@ end
 ---@param dt number
 function Widget:Update(dt)
   self:InvokeConfigFunction("update", dt)
+end
+
+function Widget:TextInput(text)
+  self:InvokeConfigFunction("onTextInput", text)
+end
+
+---@param key love.KeyConstant
+---@param scancode love.Scancode
+---@param isrepeat boolean
+function Widget:KeyPress(key, scancode, isrepeat)
+  self:InvokeConfigFunction("onKeyPress", key, scancode, isrepeat)
 end
 
 ---@param subwidget AtomicUI.Widget

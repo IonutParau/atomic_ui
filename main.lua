@@ -26,26 +26,10 @@ local btn = AtomicUI.FilledButton:create {
     n = n * 2
     t.text = "Clicks " .. n
   end,
-  whileClicked = function()
-    t.text = "Clicks " .. n .. " (current clicked)"
-  end,
-}
-
-local list = AtomicUI.ListView {
-  x = 60,
-  y = 0,
-  height = 100,
-  AtomicUI.Text "Hello",
-  AtomicUI.Text "There",
-  AtomicUI.Text "This",
-  AtomicUI.Text "Is",
-  AtomicUI.Text "A",
-  AtomicUI.Text "Test",
-  filled = true,
 }
 
 ---@type AtomicUI.Widget
-local root = list
+local root = btn
 
 function love.load()
 end

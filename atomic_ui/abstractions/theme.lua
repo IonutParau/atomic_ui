@@ -29,11 +29,36 @@ function Color:apply()
   love.graphics.setColor(self.r / 255, self.g / 255, self.b / 255, self.a / 255)
 end
 
+---@param other AtomicUI.Color
+---@param t number
+---@return AtomicUI.Color
+function Color:lerp(other, t)
+  local dr = other.r - self.r
+  local dg = other.g - self.g
+  local db = other.b - self.b
+
+  return color(self.r + dr * t, self.g + dg * t, self.b + db * t)
+end
+
+---@generic T
+---@param fn fun(): T
+---@return T
+function Color:scoped(fn)
+  local old = color()
+  self:apply()
+  
+  local x = fn()
+  
+  old:apply()
+  return x
+end
+
 ---@class AtomicUI.Theme
 ---@field primaryColor? AtomicUI.Color
 ---@field secondaryColor? AtomicUI.Color
 ---@field ternaryColor? AtomicUI.Color
 ---@field buttonColor? AtomicUI.Color
+---@field pressedButtonColor? AtomicUI.Color
 ---@field textColor? AtomicUI.Color
 ---@field textSize? number
 ---@field buttonPadding? number
@@ -64,7 +89,7 @@ AtomicUI.DefaultTheme = theme {
   -- Here is the default theme
   primaryColor = color(54, 76, 97),
   secondaryColor = color(47, 62, 77),
-  ternaryColor = color(34, 44, 54),
+  ternaryColor = color(37, 50, 59),
   textSize = 16,
   textColor = color(255, 255, 255),
   buttonPadding = 8,

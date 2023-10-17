@@ -70,12 +70,33 @@ AtomicUI.FilledButton = AtomicUI.SquareButton:inherit {
     self.rx = config.rx or AtomicUI.CurrentTheme.filledButtonRoundedCorners
     self.ry = config.ry or AtomicUI.CurrentTheme.filledButtonRoundedCorners
     self.segments = config.segments or AtomicUI.CurrentTheme.filledButtonRoundedSegments
+    self.pressedMargin = config.pressedMargin or 10
+    self.pressedColor = config.color or AtomicUI.CurrentTheme.pressedButtonColor or AtomicUI.CurrentTheme.ternaryColor or AtomicUI.color()
   end,
   beginDraw = function(self)
     local oldColor = AtomicUI.color()
-    self.color:apply()
 
-    love.graphics.rectangle("fill", self.geometry.x, self.geometry.y, self.geometry.width, self.geometry.height, self.rx, self.ry, self.segments)
+    local ox, oy, ow, oh = 0, 0, 0, 0
+
+    local rx, ry = self.rx, self.ry
+
+    if self.timedPress > 0 then
+      local t = math.min(self.timedPress, self.longPress) / self.longPress
+      
+      local lc = self.color:lerp(self.pressedColor, t)
+      lc:apply()
+
+      local aspectRatio = self.geometry.width / self.geometry.height
+
+      ox = self.pressedMargin * t
+      oy = self.pressedMargin * t / aspectRatio
+      ow = ox * 2
+      oh = oy * 2
+    else
+      self.color:apply()
+    end
+
+    love.graphics.rectangle("fill", self.geometry.x + ox, self.geometry.y + oy, self.geometry.width - ow, self.geometry.height - oh, rx, ry, self.segments)
     
     oldColor:apply()
   end,

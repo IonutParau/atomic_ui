@@ -20,4 +20,18 @@ require(path .. ".widgets.button")
 require(path .. ".widgets.containers")
 require(path .. ".widgets.listview")
 
+AtomicUI.offX = 0 -- Accumualted offsets
+AtomicUI.offY = 0
+
+function AtomicUI.mousePosition()
+  local mx, my = love.mouse.getPosition()
+
+  return mx - AtomicUI.offX, my - AtomicUI.offY
+end
+
+--- TODO: particle emitting
+function AtomicUI.emit()
+
+end
+
 return AtomicUI

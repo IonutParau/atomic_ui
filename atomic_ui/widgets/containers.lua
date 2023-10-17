@@ -66,3 +66,37 @@ AtomicUI.Box = AtomicUI.widget {
     self.geometry:copyInto(self.subwidget[1].geometry)
   end
 }
+
+AtomicUI.Tooltip = AtomicUI.widget {
+  init = function(self, config)
+    self:Add(config[1])
+    ---@type AtomicUI.Widget
+    local tooltip = config[2]
+
+    tooltip.enabled = function(self)
+      local mx, my = AtomicUI.mousePosition()
+      return mx >= self.geometry.x and my >= self.geometry.y and mx <= self.geometry.x + self.geometry.width and my <= self.geometry.y + self.geometry.height
+    end
+
+    self.geometry = config.geometry or self.geometry
+    self.geometry.x = config.x or self.geometry.x
+    self.geometry.y = config.y or self.geometry.y
+    self.geometry.width = config.width or self.geometry.width
+    self.geometry.height = config.height or self.geometry.height
+
+    self.oldGeometry = self.geometry:copy()
+  end,
+  update = function(self, dt)
+    if not self.oldGeometry:sameAs(self.geometry) then
+      self.geometry:copyInto(self.oldGeometry)
+      self.geometry:copyInto(self.subwidget[1].geometry)
+    elseif not self.geometry:sameAs(self.subwidget[1].geometry) then
+      self.subwidget[1].geometry:copyInto(self.geometry)
+    end
+
+    local mx, my = AtomicUI.mousePosition()
+    local tooltip = self.subwidget[2]
+
+    tooltip.geometry:reposition(mx, my)
+  end,
+}
