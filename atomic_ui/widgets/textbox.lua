@@ -45,6 +45,7 @@ AtomicUI.TextBox = AtomicUI.widget {
 
     local padding = t + self.padding
     local w, h = self.geometry.width - padding * 2, self.geometry.height - padding * 2
+    if w * h == 0 then return end
 
     if w ~= self.tmpcanvas:getWidth() or h ~= self.tmpcanvas:getHeight() then
       self.tmpcanvas:release()

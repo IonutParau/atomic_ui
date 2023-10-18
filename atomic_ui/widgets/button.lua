@@ -71,7 +71,7 @@ AtomicUI.FilledButton = AtomicUI.SquareButton:inherit {
     self.ry = config.ry or AtomicUI.CurrentTheme.filledButtonRoundedCorners
     self.segments = config.segments or AtomicUI.CurrentTheme.filledButtonRoundedSegments
     self.pressedMargin = config.pressedMargin or 10
-    self.pressedColor = config.color or AtomicUI.CurrentTheme.pressedButtonColor or AtomicUI.CurrentTheme.ternaryColor or AtomicUI.color()
+    self.pressedColor = config.color or AtomicUI.CurrentTheme.pressedButtonColor or AtomicUI.CurrentTheme.secondaryColor or AtomicUI.color()
   end,
   beginDraw = function(self)
     local oldColor = AtomicUI.color()

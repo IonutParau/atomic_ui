@@ -35,6 +35,7 @@ AtomicUI.Box = AtomicUI.widget {
     self.rx = config.rx
     self.ry = config.ry
     self.segments = config.segments
+    self.filled = config.filled
 
     self.geometry = config.geometry or self.geometry
     self.geometry.x = config.x or self.geometry.x
@@ -55,6 +56,7 @@ AtomicUI.Box = AtomicUI.widget {
     end
   end,
   beginDraw = function(self)
+    if not self.filled then return end
     local oldcolor = AtomicUI.color()
     self.color:apply()
 

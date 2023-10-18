@@ -20,6 +20,7 @@ require(path .. ".widgets.button")
 require(path .. ".widgets.containers")
 require(path .. ".widgets.listview")
 require(path .. ".widgets.textbox")
+require(path .. ".widgets.toggle")
 
 AtomicUI.offX = 0 -- Accumualted offsets
 AtomicUI.offY = 0
@@ -34,5 +35,18 @@ end
 function AtomicUI.emit()
 
 end
+
+AtomicUI.version = {
+  dev = true, -- Means this is a dev version
+  major = 0,
+  minor = 1,
+  bugfix = 0,
+}
+
+setmetatable(AtomicUI.version, {
+  __tostring = function(v)
+    return v.major .. "." .. v.minor .. ":" .. v.bugfix .. (v.dev and " [DEV]" or "")
+  end,
+})
 
 return AtomicUI

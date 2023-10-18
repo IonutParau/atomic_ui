@@ -8,42 +8,83 @@ love.graphics.setColor(1, 1, 1)
 
 local n = 0
 
-local t = AtomicUI.Text:create {
-  "Clicks 0",
-  padding = 10,
-  fontSize = 32,
-  x = 20,
-  y = 20,
-}
-
-local btn = AtomicUI.FilledButton:create {
-  t,
-  onClick = function()
-    n = n + 1
-    t.text = "Clicks " .. n
-  end,
-  onLongClick = function()
-    n = n * 2
-    t.text = "Clicks " .. n
-  end,
-}
-
-local textbox = AtomicUI.TextBox {
-  x = 20,
-  y = 20,
-  width = 200,
-  height = 100,
-}
 
 ---@type AtomicUI.Widget
-local root = AtomicUI.ListView {
-  btn,
-  textbox,
-  width = 300,
-  height = 600,
-  x = 50,
-  y = 50,
-}
+local root
+
+---@return AtomicUI.Widget
+function BuildDemo()
+  local t = AtomicUI.Text:create {
+    "Clicks 0",
+    padding = 10,
+    fontSize = 32,
+    x = 20,
+    y = 20,
+  }
+
+  local btn = AtomicUI.FilledButton:create {
+    t,
+    onClick = function()
+      n = n + 1
+      t.text = "Clicks " .. n
+    end,
+    onLongClick = function()
+      n = n * 2
+      t.text = "Clicks " .. n
+    end,
+  }
+
+  local textbox = AtomicUI.TextBox {
+    x = 20,
+    y = 20,
+    width = 200,
+    height = 100,
+  }
+
+  return AtomicUI.ListView {
+    AtomicUI.Text "Demo",
+    AtomicUI.Text ("AtomicUI v"  .. tostring(AtomicUI.version)),
+    btn,
+    AtomicUI.Box {
+      AtomicUI.Row {
+        AtomicUI.Text "Hello",
+      },
+      height = 60,
+      filled = false,
+    },
+    AtomicUI.Box {
+      AtomicUI.Row {
+        AtomicUI.Text "TextBox: ",
+        textbox, 3
+      },
+      filled = false,
+      height = 60,
+    },
+    AtomicUI.Box {
+      AtomicUI.Row {
+        AtomicUI.Text "Dark Mode: ", 4,
+        AtomicUI.Switch {
+          toggled = AtomicUI.CurrentTheme == AtomicUI.Themes.Nordic,
+          onToggle = function(enabled)
+            AtomicUI.CurrentTheme = enabled and AtomicUI.Themes.Nordic or AtomicUI.Themes.Crystal
+            root = BuildDemo()
+          end,
+        }
+      },
+      filled = false,
+      height = 60,
+    },
+    width = 400,
+    height = 600,
+    x = 50,
+    y = 50,
+    filled = true,
+    rx = 7,
+    ry = 10,
+  }
+end
+
+root = BuildDemo()
 
 love.keyboard.setKeyRepeat(true)
 
@@ -69,4 +110,8 @@ end
 
 function love.wheelmoved(x, y)
   root:Scroll(love.mouse.getX(), love.mouse.getY(), x, y)
+end
+
+function love.mousepressed(x, y, btn, istouch, presses)
+  root:MousePressed(btn, istouch, presses)
 end

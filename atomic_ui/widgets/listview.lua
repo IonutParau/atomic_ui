@@ -18,6 +18,8 @@ AtomicUI.ListView = AtomicUI.widget {
     self.geometry.height = config.height or self.geometry.height
     self.tmpcanvas = love.graphics.newCanvas()
     self.filled = config.filled
+    self.rx = config.rx
+    self.ry = config.ry
     self.scrollSpeed = config.scrollSpeed or 20
 
     self.scrollingAmount = self.scrollingAmount or 0
@@ -53,11 +55,13 @@ AtomicUI.ListView = AtomicUI.widget {
       self.tmpcanvas = love.graphics.newCanvas(w, h)
     end
     love.graphics.setCanvas(self.tmpcanvas)
+    love.graphics.clear()
     if self.filled then
+      local old = AtomicUI.color()
       local color = AtomicUI.CurrentTheme.ternaryColor
-      love.graphics.clear(color.r / 255, color.g / 255, color.b / 255, color.a / 255)
-    else
-      love.graphics.clear(0, 0, 0, 0)
+      color:apply()
+      love.graphics.rectangle("fill", 0, 0, w, h, self.rx, self.ry)
+      old:apply()
     end
   end,
   endDraw = function (self)

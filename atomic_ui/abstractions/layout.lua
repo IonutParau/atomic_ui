@@ -15,14 +15,20 @@
 local function layout(config)
   local w = AtomicUI.widget {
     updateGeometry = config.updateGeometry,
-    init = config.init,
+    init = function(self, ...)
+      if config.init then config.init(self, ...) end
+      self.oldGeometry = AtomicUI.geometry {}
+    end,
     update = function(self, dt)
       ---@cast self AtomicUI.Layout
 
       if not self.oldParentGeometry:sameAs(self.parent.geometry) then
         self:UpdateGeometry()
         config.processWidgets(self, self.parent.geometry.width, self.parent.geometry.height)
-        self.oldParentGeometry:copyInto(self.parent.geometry)
+        self.parent.geometry:copyInto(self.oldParentGeometry)
+      elseif not self.oldGeometry:sameAs(self.geometry) then
+        self.geometry:copyInto(self.oldGeometry)
+        config.processWidgets(self, self.parent.geometry.width, self.parent.geometry.height)
       end
       if config.update then
         config.update(self, dt)
@@ -43,10 +49,10 @@ local function layout(config)
 
   if config.addWidget then
     local oldAdd = w.Add
-    w.Add = function(self, subwidget)
-      oldAdd(self, subwidget)
+    w.Add = function(self, subwidget, ...)
+      oldAdd(self, subwidget, ...)
       ---@cast self AtomicUI.Layout
-      config.addWidget(self, subwidget)
+      config.addWidget(self, subwidget, ...)
     end
   end
 

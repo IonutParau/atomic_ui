@@ -7,24 +7,29 @@ AtomicUI.LineLayout = AtomicUI.layout {
     self.sizes = {}
     self.vertical = config.vertical
 
-    for _, child in ipairs(config) do
-      self:Add(child)
-      table.insert(self.sizes, 1)
+    local i = 1
+    while i <= #config do
+      if type(config[i+1]) == "number" then
+        local size = config[i+1]
+        self:Add(config[i], size)
+        i = i + 2
+      else
+        self:Add(config[i])
+        i = i + 1
+      end
     end
   end,
   addWidget = function(self, widget, size)
-    table.insert(self.subwidget, widget)
     table.insert(self.sizes, size or 1)
   end,
   processWidgets = function (self, parentWidth, parentHeight)
     self.geometry:resize(parentWidth, parentHeight)
     self.geometry:reposition(self.parent.geometry.x, self.parent.geometry.y)
-    local maxOrthogonal = 0
+    local maxOrthogonal = self.vertical and self.geometry.width or self.geometry.height
 
     -- Use up-to-date geometry
     for _, subwidget in ipairs(self.subwidget) do
       subwidget:UpdateGeometry()
-      maxOrthogonal = math.max(maxOrthogonal, self.vertical and subwidget.geometry.width or subwidget.geometry.height)
     end
 
     local total = 0
@@ -50,10 +55,22 @@ AtomicUI.LineLayout = AtomicUI.layout {
         geometry:move(i, self.spacing)
         geometry:resize(size * sizePerUnit, maxOrthogonal)
       end
-      i = i + size * sizePerUnit + self.spacing
+     i = i + size * sizePerUnit + self.spacing
     end
   end,
   updateGeometry = function (self)
-    -- No-op
+    -- code
   end
+}
+
+AtomicUI.Row = AtomicUI.LineLayout:inherit {
+  init = function(self, config)
+    self.vertical = false
+  end
+}
+
+AtomicUI.Column = AtomicUI.LineLayout:inherit {
+  init = function(self, config)
+    self.vertical = true
+  end,
 }

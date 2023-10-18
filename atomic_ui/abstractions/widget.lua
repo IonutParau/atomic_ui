@@ -20,6 +20,7 @@ local Widget = {}
 ---@field onScroll? fun(self: AtomicUI.Widget, x: number, y: number, scrollX: number, scrollY: number)
 ---@field onTextInput? fun(self: AtomicUI.Widget, text: string)
 ---@field onKeyPress? fun(self: AtomicUI.Widget, key: love.KeyConstant, scancode: love.Scancode, isrepeat: boolean)
+---@field onMousePress? fun(self: AtomicUI.Widget, btn: number, istouch: boolean, presses: number)
 ---@field sideEffects? fun(self: AtomicUI.Widget)
 ---@field restoreEffects? fun(self: AtomicUI.Widget)
 
@@ -156,6 +157,14 @@ function Widget:Resize(newWidth, newHeight)
   self.config.onResize(self, newWidth, newHeight)
 end
 
+---@param x number
+---@param y number
+---@param sx number
+---@param sy number
 function Widget:Scroll(x, y, sx, sy)
   self:InvokeConfigFunction("onScroll", x, y, sx, sy)
+end
+
+function Widget:MousePressed(btn, istouch, presses)
+  self:InvokeConfigFunction("onMousePress", btn, istouch, presses)
 end

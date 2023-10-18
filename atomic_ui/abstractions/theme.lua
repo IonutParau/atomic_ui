@@ -73,11 +73,7 @@ end
 local function theme(config)
   config.inheritsFrom = config.inheritsFrom or AtomicUI.DefaultTheme
 
-  for k, v in pairs(config) do
-    if k ~= "inheritsFrom" then
-      config[k] = v or config.inheritsFrom[k]
-    end
-  end
+  setmetatable(config, {__index= config.inheritsFrom})
 
   return config
 end
@@ -96,6 +92,15 @@ AtomicUI.DefaultTheme = theme {
   listSpacing = 10,
   filledButtonRoundedCorners = 15,
   textPadding = 3,
+}
+
+AtomicUI.Themes = {}
+
+AtomicUI.Themes.Nordic = AtomicUI.DefaultTheme
+AtomicUI.Themes.Crystal = theme {
+  primaryColor = color(197, 209, 208),
+  secondaryColor = color(152, 166, 165),
+  ternaryColor = color(105, 107, 107),
 }
 
 AtomicUI.CurrentTheme = AtomicUI.DefaultTheme
