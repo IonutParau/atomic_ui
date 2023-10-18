@@ -12,8 +12,8 @@ AtomicUI.TextBox = AtomicUI.widget {
 
     self.rx = config.rx or AtomicUI.CurrentTheme.textBoxRoundedCorners or 0
     self.ry = config.ry or AtomicUI.CurrentTheme.textBoxRoundedCorners or 0
-    self.fillColor = config.fillColor or AtomicUI.CurrentTheme.secondaryColor or color()
-    self.boundaryColor = config.boundaryColor or AtomicUI.CurrentTheme.ternaryColor or color()
+    self.fillColor = config.fillColor or AtomicUI.CurrentTheme.primaryColor or AtomicUI.color()
+    self.boundaryColor = config.boundaryColor or AtomicUI.CurrentTheme.secondaryColor or AtomicUI.color()
     self.boundaryThickness = config.boundaryThickness or AtomicUI.CurrentTheme.textBoxThickness or 5
     self.padding = config.padding or AtomicUI.CurrentTheme.textPadding or 2
     self.tmpcanvas = love.graphics.newCanvas(self.geometry.width, self.geometry.height)

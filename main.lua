@@ -15,7 +15,7 @@ local root
 ---@return AtomicUI.Widget
 function BuildDemo()
   local t = AtomicUI.Text:create {
-    "Clicks 0",
+    "Clicks " .. n,
     padding = 10,
     fontSize = 32,
     x = 20,

@@ -66,6 +66,7 @@ end
 ---@field listSpacing? number
 ---@field filledButtonRoundedCorners? number
 ---@field filledButtonRoundedSegments? number
+---@field switchButtonRoundedCorners? number
 ---@field inheritsFrom? AtomicUI.Theme
 
 ---@param config AtomicUI.Theme
@@ -91,6 +92,7 @@ AtomicUI.DefaultTheme = theme {
   buttonPadding = 8,
   listSpacing = 10,
   filledButtonRoundedCorners = 15,
+  switchButtonRoundedCorners = 20,
   textPadding = 3,
 }
 
