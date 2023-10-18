@@ -98,9 +98,9 @@ AtomicUI.Themes = {}
 
 AtomicUI.Themes.Nordic = AtomicUI.DefaultTheme
 AtomicUI.Themes.Crystal = theme {
-  primaryColor = color(197, 209, 208),
-  secondaryColor = color(152, 166, 165),
-  ternaryColor = color(105, 107, 107),
+  primaryColor = color(110, 115, 115),
+  secondaryColor = color(125, 133, 132),
+  ternaryColor = color(168, 173, 173),
 }
 
 AtomicUI.CurrentTheme = AtomicUI.DefaultTheme

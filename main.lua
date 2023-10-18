@@ -72,7 +72,7 @@ function BuildDemo()
         }
       },
       filled = false,
-      height = 60,
+      height = 50,
     },
     width = 400,
     height = 600,
