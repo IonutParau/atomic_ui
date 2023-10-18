@@ -28,18 +28,43 @@ local btn = AtomicUI.FilledButton:create {
   end,
 }
 
+local textbox = AtomicUI.TextBox {
+  x = 20,
+  y = 20,
+  width = 200,
+  height = 100,
+}
+
 ---@type AtomicUI.Widget
-local root = btn
+local root = AtomicUI.ListView {
+  btn,
+  textbox,
+  width = 300,
+  height = 600,
+  x = 50,
+  y = 50,
+}
+
+love.keyboard.setKeyRepeat(true)
 
 function love.load()
 end
 
 function love.draw()
+  love.graphics.clear()
   root:Draw()
 end
 
 function love.update(dt)
   root:Update(dt)
+end
+
+function love.textinput(t)
+  root:TextInput(t)
+end
+
+function love.keypressed(key, scancode, isrepeat)
+  root:KeyPress(key, scancode, isrepeat)
 end
 
 function love.wheelmoved(x, y)

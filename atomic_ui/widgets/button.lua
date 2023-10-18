@@ -31,7 +31,7 @@ AtomicUI.RawButton = AtomicUI.widget {
       self.subwidget[1].geometry:copyInto(self.geometry)
     end
 
-    local mx, my = love.mouse.getPosition()
+    local mx, my = AtomicUI.mousePosition()
     if love.mouse.isDown(1) and self.shape(self.geometry, mx, my) then
       -- Is pressed
       self.timedPress = self.timedPress + dt

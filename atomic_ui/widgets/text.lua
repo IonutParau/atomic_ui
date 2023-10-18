@@ -7,7 +7,7 @@ AtomicUI.Text = AtomicUI.widget {
     self.text = config[1] or config.text or "No text"
     self.fontSize = config.fontSize or AtomicUI.CurrentTheme.textSize
     if config.font then
-      self.font = config.font and love.graphics.newFont(config.font, self.fontSize) or love.graphics.newFont(self.fontSize)
+      self.font = love.graphics.newFont(config.font, self.fontSize)
     else
       self.font = love.graphics.newFont(self.fontSize)
     end

@@ -20,6 +20,8 @@ local Widget = {}
 ---@field onScroll? fun(self: AtomicUI.Widget, x: number, y: number, scrollX: number, scrollY: number)
 ---@field onTextInput? fun(self: AtomicUI.Widget, text: string)
 ---@field onKeyPress? fun(self: AtomicUI.Widget, key: love.KeyConstant, scancode: love.Scancode, isrepeat: boolean)
+---@field sideEffects? fun(self: AtomicUI.Widget)
+---@field restoreEffects? fun(self: AtomicUI.Widget)
 
 ---@param config AtomicUI.WidgetConfig
 ---@return AtomicUI.Widget
@@ -87,12 +89,18 @@ function Widget:InvokeConfigFunction(name, ...)
     return
   end
 
+  if self.config.sideEffects then self.config.sideEffects(self) end
+
   -- Because all configs are optinal, we need to check if it exists
   if self.config[name] then self.config[name](self, ...) end
 
   for _, subwidget in ipairs(self.subwidget) do
     subwidget:InvokeConfigFunction(name, ...)
   end
+
+  if self.config[name .. "_finalize"] then self.config[name .. "_finalize"](self, ...) end
+
+  if self.config.restoreEffects then self.config.restoreEffects(self) end
 end
 
 ---@param name string
@@ -111,7 +119,7 @@ function Widget:InvokeConfigFunctionInverse(name, ...)
 end
 
 function Widget:UpdateGeometry()
-  self.config.updateGeometry(self)
+  if self.config.updateGeometry then self.config.updateGeometry(self) end
 end
 
 function Widget:Draw()

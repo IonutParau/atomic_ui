@@ -19,6 +19,7 @@ require(path .. ".widgets.node")
 require(path .. ".widgets.button")
 require(path .. ".widgets.containers")
 require(path .. ".widgets.listview")
+require(path .. ".widgets.textbox")
 
 AtomicUI.offX = 0 -- Accumualted offsets
 AtomicUI.offY = 0
