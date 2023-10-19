@@ -47,15 +47,13 @@ function BuildDemo()
     btn,
     AtomicUI.Box {
       AtomicUI.Row {
-        AtomicUI.Text "Hello",
-      },
-      height = 60,
-      filled = false,
-    },
-    AtomicUI.Box {
-      AtomicUI.Row {
-        AtomicUI.Text "TextBox: ",
-        textbox, 3
+        AtomicUI.Center {
+          AtomicUI.Text {
+            "TextBox: ",
+            height = 30,
+          },
+        },
+        textbox, 2
       },
       filled = false,
       height = 60,

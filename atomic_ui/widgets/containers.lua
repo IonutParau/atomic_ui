@@ -113,9 +113,17 @@ AtomicUI.Center = AtomicUI.widget {
   end,
   update = function(self, dt)
     local child = self.subwidget[1]
+
+    if child.geometry.width > self.geometry.width then
+      child.geometry.width = self.geometry.width
+    end
+    if child.geometry.height > self.geometry.height then
+      child.geometry.height = self.geometry.height
+    end
+
     local cw, ch = child.geometry.width * self.childCenterX, child.geometry.height * self.childCenterY
     local sw, sh = self.geometry.width * self.centerX, self.geometry.height * self.centerY
 
-    child.geometry:reposition(sw - cw, sh - ch)
+    child.geometry:reposition(self.geometry.x + sw - cw, self.geometry.y + sh - ch)
   end,
 }

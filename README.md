@@ -7,9 +7,9 @@ Work in Progress.
 It is not done.
 
 TODO:
-- Animator widget (handles animations)
 - Radio Button and Radio Button Group
-- Built-in Rows and Columns layouts (wrappers for LineLayout)
+- Slider
+- Built-in animation curves
 - GroupLayout
 - Dropdown
 - LazyList (list with a generator for its widgets, for performance)
