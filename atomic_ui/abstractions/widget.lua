@@ -1,9 +1,10 @@
----@class AtomicUI.Widget<T>
+---@class AtomicUI.Widget
 ---@field enabled boolean | (fun(self: AtomicUI.Widget): boolean)
 ---@field internal table
 ---@field config AtomicUI.WidgetConfig
 ---@field subwidget AtomicUI.Widget[]
 ---@field geometry AtomicUI.Geometry
+---@operator call(...): AtomicUI.Widget
 local Widget = {}
 
 ---@class AtomicUI.WidgetConfig

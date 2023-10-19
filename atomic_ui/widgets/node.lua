@@ -57,3 +57,51 @@ function Router:new(paths, initialPath)
 end
 
 AtomicUI.Router = Router
+
+AtomicUI.Animator = AtomicUI.widget {
+  init = function(self, config)
+    self.duration = config.duration or 1
+    self.time = 0
+    self.curve = config.curve or function(x) return x end
+    self.animator = config.animator
+    self.playing = config.playing
+  end,
+  update = function(self, dt)
+    local playing = type(self.playing) == "function" and self.playing(self) or self.playing
+
+    if playing then
+      self.time = self.time + dt
+      if self.time > self.duration then self.time = 0 end
+      local x = self.time / self.duration
+      x = self.curve(x)
+      self.animator(x)
+    end
+  end,
+}
+
+local function lerp(a, b, t)
+  return a + (b - a) * t
+end
+
+function AtomicUI.Animator.move(config)
+  local widget = config[1]
+  local sx = config.x or widget.geometry.x
+  local sy = config.y or widget.geometry.y
+  local dx = config.dx or (config.ex - sx)
+  local dy = config.dy or (config.ey - sy)
+
+  return function(x)
+    widget.geometry:reposition(sx + dx * x, sy + dy * x)
+  end
+end
+
+function AtomicUI.Animator.scale(config)
+  local widget = config[1]
+  local w, h = config.width or widget.geometry.width, config.height or widget.geometry.height
+  local sw, sh = config.widthScale or (config.finalWidth / w), config.heightScale or (config.finalHeight / h)
+  return function(x)
+    local a = lerp(1, sw, x)
+    local b = lerp(1, sw, x)
+    widget.geometry:resize(w * a, h * b)
+  end
+end

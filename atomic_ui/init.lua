@@ -8,6 +8,7 @@ require(path .. ".abstractions.widget")
 require(path .. ".abstractions.layout")
 require(path .. ".abstractions.theme")
 require(path .. ".abstractions.json")
+AtomicUI.Curves = require(path .. ".abstractions.curves")
 
 -- Layouts
 require(path .. ".layouts.linear_layout")
