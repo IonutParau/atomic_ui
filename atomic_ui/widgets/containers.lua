@@ -102,3 +102,20 @@ AtomicUI.Tooltip = AtomicUI.widget {
     tooltip.geometry:reposition(mx, my)
   end,
 }
+
+AtomicUI.Center = AtomicUI.widget {
+  init = function(self, config)
+    self:Add(config[1])
+    self.centerX = config.centerX or 0.5
+    self.centerY = config.centerY or 0.5
+    self.childCenterX = config.childCenterX or 0.5
+    self.childCenterY = config.childCenterY or 0.5
+  end,
+  update = function(self, dt)
+    local child = self.subwidget[1]
+    local cw, ch = child.geometry.width * self.childCenterX, child.geometry.height * self.childCenterY
+    local sw, sh = self.geometry.width * self.centerX, self.geometry.height * self.centerY
+
+    child.geometry:reposition(sw - cw, sh - ch)
+  end,
+}
