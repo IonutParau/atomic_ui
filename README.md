@@ -8,7 +8,6 @@ It is not done.
 
 TODO:
 - Radio Button and Radio Button Group
-- Slider
 - Built-in animation curves
 - GroupLayout
 - Dropdown

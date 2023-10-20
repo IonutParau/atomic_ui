@@ -22,6 +22,7 @@ require(path .. ".widgets.containers")
 require(path .. ".widgets.listview")
 require(path .. ".widgets.textbox")
 require(path .. ".widgets.toggle")
+require(path .. ".widgets.slider")
 
 AtomicUI.offX = 0 -- Accumualted offsets
 AtomicUI.offY = 0

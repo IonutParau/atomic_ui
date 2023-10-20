@@ -72,6 +72,19 @@ function BuildDemo()
       filled = false,
       height = 50,
     },
+    AtomicUI.Box {
+      AtomicUI.Row {
+        AtomicUI.Center {
+          AtomicUI.Text {
+            "Slider: ",
+            height = 40,
+          },
+        },
+        AtomicUI.Slider {},
+      },
+      filled = false,
+      height = 50,
+    },
     width = 400,
     height = 600,
     x = 50,
