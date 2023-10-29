@@ -41,3 +41,33 @@ AtomicUI.Switch = AtomicUI.widget {
     end
   end,
 }
+
+AtomicUI.CheckBox = AtomicUI.widget {
+  init = function(self, config)
+    self.toggled = config.toggled
+    self.backgroundColor = config.backgroundColor
+    self.color = config.color
+    self.thickness = config.thickness
+    self.padding = config.padding
+  end,
+  beginDraw = function(self)
+    local old = AtomicUI.color()
+
+    local backgroundColor = config.backgroundColor or AtomicUI.CurrentTheme.secondaryColor
+    backgroundColor:apply()
+    love.graphics.rectangle("fill", self.geometry.x, self.geometry.y, self.geometry.width, self.geometry.height)
+    
+    local padding = self.padding or 10
+    local thickness = self.thickness or 5
+
+    local color = config.color or AtomicUI.CurrentTheme.primaryColor
+    color:apply()
+
+    do
+      local lw = love.graphics.getLineWidth()
+      love.graphics.setLineWidth(thickness)
+      love.graphics.rectangle("line", self.geometry.x + thickness/2, self.geometry.y + thickness/2, self.geometry.width - thickness, self.geometry.height - thickness)
+    end
+    old:apply()
+  end,
+}

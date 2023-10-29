@@ -45,45 +45,36 @@ function BuildDemo()
     AtomicUI.Text "Demo",
     AtomicUI.Text ("AtomicUI v"  .. tostring(AtomicUI.version)),
     btn,
-    AtomicUI.Box {
-      AtomicUI.Row {
-        AtomicUI.Center {
-          AtomicUI.Text {
-            "TextBox: ",
-            height = 30,
-          },
+    AtomicUI.Row {
+      AtomicUI.Center {
+        AtomicUI.Text {
+          "TextBox: ",
+          height = 30,
         },
-        textbox, 2
       },
-      filled = false,
+      textbox, 2,
       height = 60,
     },
-    AtomicUI.Box {
-      AtomicUI.Row {
-        AtomicUI.Text "Dark Mode: ", 4,
-        AtomicUI.Switch {
-          toggled = AtomicUI.CurrentTheme == AtomicUI.Themes.Nordic,
-          onToggle = function(enabled)
-            AtomicUI.CurrentTheme = enabled and AtomicUI.Themes.Nordic or AtomicUI.Themes.Crystal
-            root = BuildDemo()
-          end,
-        }
+    AtomicUI.Row {
+      AtomicUI.Text "Dark Mode: ", 4,
+      AtomicUI.Switch {
+        toggled = AtomicUI.CurrentTheme == AtomicUI.Themes.Nordic,
+        onToggle = function(enabled)
+          AtomicUI.CurrentTheme = enabled and AtomicUI.Themes.Nordic or AtomicUI.Themes.Crystal
+          root = BuildDemo()
+        end,
       },
-      filled = false,
-      height = 50,
+      height = 60,
     },
-    AtomicUI.Box {
-      AtomicUI.Row {
-        AtomicUI.Center {
-          AtomicUI.Text {
-            "Slider: ",
-            height = 40,
-          },
+    AtomicUI.Row {
+      AtomicUI.Center {
+        AtomicUI.Text {
+          "Slider: ",
+          height = 40,
         },
-        AtomicUI.Slider {},
       },
-      filled = false,
-      height = 50,
+      AtomicUI.Slider {},
+      height = 60,
     },
     width = 400,
     height = 600,

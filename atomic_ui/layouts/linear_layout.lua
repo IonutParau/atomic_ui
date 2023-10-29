@@ -7,6 +7,12 @@ AtomicUI.LineLayout = AtomicUI.layout {
     self.sizes = {}
     self.vertical = config.vertical
 
+    self.geometry = config.geometry or self.geometry
+    self.geometry.x = config.x or self.geometry.x
+    self.geometry.y = config.y or self.geometry.y
+    self.geometry.width = config.width or self.geometry.width
+    self.geometry.height = config.height or self.geometry.height
+
     local i = 1
     while i <= #config do
       if type(config[i+1]) == "number" then
@@ -22,9 +28,7 @@ AtomicUI.LineLayout = AtomicUI.layout {
   addWidget = function(self, widget, size)
     table.insert(self.sizes, size or 1)
   end,
-  processWidgets = function (self, parentWidth, parentHeight)
-    self.geometry:resize(parentWidth, parentHeight)
-    self.geometry:reposition(self.parent.geometry.x, self.parent.geometry.y)
+  processWidgets = function (self)
     local maxOrthogonal = self.vertical and self.geometry.width or self.geometry.height
 
     -- Use up-to-date geometry
@@ -38,7 +42,7 @@ AtomicUI.LineLayout = AtomicUI.layout {
       total = total + size
     end
 
-    local maxParallel = self.vertical and parentHeight or parentWidth
+    local maxParallel = self.vertical and self.geometry.height or self.geometry.width
     local sizePerUnit = (maxParallel - totalSpacing * self.spacing) / total
 
     local i = 0

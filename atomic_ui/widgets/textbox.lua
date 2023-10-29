@@ -98,6 +98,13 @@ AtomicUI.TextBox = AtomicUI.widget {
       self.cursor = math.max(self.cursor - 1, 0)
     elseif key == "right" then
       self.cursor = math.min(self.cursor + 1, #self.current)
+    elseif key == "v" and love.keyboard.isDown("lctrl") then
+      local behind = self.current:sub(1, self.cursor)
+      local after = self.current:sub(self.cursor + 1, -1)
+      local paste = love.system.getClipboardText()
+
+      self.current = behind .. paste .. after
+      self.cursor = self.cursor + #paste
     end
   end
 }
