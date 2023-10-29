@@ -23,6 +23,9 @@ AtomicUI.TextBox = AtomicUI.widget {
     else
       self.font = love.graphics.newFont(self.textQuality)
     end
+
+    self.validator = config.validator
+    self.isPassword = config.isPassword
   end,
   update = function (self, delta)
     local mx, my = AtomicUI.mousePosition()
@@ -62,6 +65,22 @@ AtomicUI.TextBox = AtomicUI.widget {
 
     local oldfont = love.graphics.getFont()
     love.graphics.setFont(self.font)
+    local text = self.current
+    if self.isPassword then
+      local password = ""
+      
+      for i=1,#text do
+        password = password .. "*"
+      end
+
+      if type(self.isPassword) == "function" then
+        if self.isPassword() then
+          text = password
+        end
+      else
+        text = password
+      end
+    end
     love.graphics.print(self.current, off, 0, 0, textScale, textScale)
 
     old:apply()
@@ -80,6 +99,9 @@ AtomicUI.TextBox = AtomicUI.widget {
   end,
   onTextInput = function(self, text)
     if not self.selected then return end
+    if self.validator then
+      if not self.validator(text) then return end
+    end
     local behind = self.current:sub(1, self.cursor)
     local after = self.current:sub(self.cursor + 1, -1)
 
@@ -108,3 +130,10 @@ AtomicUI.TextBox = AtomicUI.widget {
     end
   end
 }
+
+AtomicUI.TextBox.numberOnly = function(text)
+  local byte = string.byte(text, 1, 1)
+  local a, b = string.byte("09", 1, 2)
+
+  return byte >= a and byte <= b
+end
